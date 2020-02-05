@@ -1,0 +1,7 @@
+models/vae_mlp_mnist.h5
+models/.DS_Store
+models/mnist_full/teacher.h5
+models/mnist_full/vae_mnist.h5
+models/mnist_full/teacher_10-60.h5
+models/mnist_full/images_1/*.png
+Frontend/static/generated_images/*.png

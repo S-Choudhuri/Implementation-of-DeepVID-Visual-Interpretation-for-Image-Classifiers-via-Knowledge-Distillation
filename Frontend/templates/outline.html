@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/style.css">
+        <script src="https://unpkg.com/jeezy@1.12.11/lib/jeezy.min.js"></script>
+        <script src="https://unpkg.com/data2grid@1.0.0/build/data2grid.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/1.3.5/chroma.min.js"></script>
+        <script src="https://d3js.org/d3.v4.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+        <script src="/static/scripts/confusion.js"></script>
+        <script src="/static/scripts/bar.js"></script>
+        <script src="/static/scripts/parallelcoord.js"></script>
+        <script src="/static/scripts/imagestack.js"></script>
+        <script src="/static/scripts/bar2.js"></script>
+        <script src="/static/scripts/lasso.js"></script>
+        <script src="/static/scripts/scatter.js"></script>
+        <script src="/static/scripts/ImageGrid.js"></script>
+        <script src="/static/scripts/ImageGrid2.js"></script>
+    </head>
+    <body>
+        <div id="header1">
+            <div style="margin: 2px;" class='container'>
+                <p class="alignleft"> </p>
+                <p class="alignleft white_color">
+                    Teacher View
+                </p>
+                <p class="alignright  white_color"> Model Accuracy: 96.04%</p>
+                <p class="alignright  white_color" id="p1"> Selected: 0 </p>
+                <!--<button style="height:25px" class="alignright" type="button">Add</button>-->
+                <!--<input class="alignright" name="index" type="text" size="8" placeholder="index">-->
+            </div>
+        </div>
+        <div class='container'>
+            <div style="margin: 2px;" id="first">
+                <div id="scatter">
+                </div>
+            </div>
+            <div class="wrapper" style="margin: 2px;" id="second">
+
+            </div>
+            <div style="margin: 2px;" id="third">
+        
+                <input type="radio" value="false"  name="choice" id="pemp_yes" checked>
+                <label for="pemp_yes">Confusion Matrix</label>
+                <input type="radio" value="true" name="choice" id="pemp_no" >
+                <label for="pemp_no">Chord Diagram</label>
+               
+                <div class="template" id="grid">
+                    <svg width="200" height="200" viewBox="-30 -30 200 200"></svg>
+                </div>
+                <script src="/static/scripts/chord2.js"></script>
+                <div class="template2" id="chord2">
+                </div>
+                
+                <script type="text/javascript">
+                    $("#chord2").hide();
+                    $("input[name='choice']").on("click", function(){
+                        $(".template").toggle(this.value === "false" && this.checked);
+                        $(".template2").toggle(this.value === "true" && this.checked);
+                    });
+
+                </script>
+
+                <div id="legend"></div>
+                <div id="bar"></div>
+		        
+            </div>
+        </div>
+        <form id="constructImageGrid2">
+            <div id="header2">
+                <div style="margin: 2px;" class='container'>
+                    <p class="alignleft white_color"> VAE View </p>
+                    <button style="height:25px" class="alignright" id="generateVAEImages"> Generate & Train </button>
+                    <input class="alignright" id="samples" value="144" name="samples" type="text" size="5" placeholder="512">
+                    <p class="alignright white_color"> samples: </p>
+                    <input class="alignright" id="bandwidth" name="bandwidth" value="15" type="text" size="5" placeholder="15">
+                    <p class="alignright white_color"> band width:</p>
+                    <button style="height:25px" class="alignright" id="reset_band" type="button">Reset Band</button>
+                    <button style="height:25px" class="alignright" id="reset_poly" type="button">Reset Polyline</button>
+                    <input type="hidden" name="vaeInput" id="vaeInput" />
+                    <input type="hidden" name="vaeSelectedImage" id="vaeSelectedImage" />
+                </div>
+            </div>
+            <div id="header3">
+                <div style="margin: 2px;" class='container3'>
+                    <p class="alignleft white_color"> Student </p>
+                </div>
+                <input class="alignright" name="temp" type="text" size="3" placeholder="10">
+                <p class="alignright white_color"> temp: </p>
+
+                <input class="alignright" name="batch" type="text" size="3" placeholder="128">
+                <p class="alignright white_color"> batch: </p>
+
+                <input class="alignright" name="epoch" type="text" size="3" placeholder="10">
+                <p class="alignright white_color"> epoch: </p>
+            </div>
+            <div class='container'>
+                <div style="margin: 2px;" id="fourth">
+                    <div id="pcor">
+                    </div>
+                </div>
+                <div class="wrapper2" style="margin: 2px;" id="fifth">
+                </div>
+                <!-- <p class="hide" id="imagearVal">{{names}}</p> -->
+                <script type="text/javascript">
+                        var flaskdata = JSON.parse('{{names | tojson | safe}}');
+                        console.log(flaskdata.images)
+
+                 ImageGrid2(document.querySelectorAll('.wrapper2')[0],flaskdata.images);
+
+                </script>    
+                <div style="margin: 2px;" id="sixth">
+                    <div id="dropd" >
+                        Initializer:
+                        <select name="sel1">
+                            <option value="zero" selected>Zero</option>
+                            <option value="random">Random</option>
+                        </select>
+                        <br/>
+                        Optimizer:
+                        <select name="sel2">
+                          <option value="gd" selected>GD</option>
+                          <option value="adam">Adam</option>
+                        </select>
+                    </div>
+                    <div id="imint" ><img src="/static/images/000000-num7.png" alt="7">
+                    </div>
+
+		   <div>
+                    <div class="wrapper3">
+                    <script type="text/javascript">
+                    var imarrstu1 = ["000000-num7.png","000000-num7.png","000000-num7.png","000000-num7.png","000000-num7.png",
+        "000000-num7.png","000000-num7.png","000000-num7.png","000000-num7.png","000000-num7.png"]
+ 
+                    ImageGrid3(document.querySelectorAll('.wrapper4')[0],imarrstu1);
+                    </script>
+                    </div>
+                     <div class="wrapper4">
+                    <script type="text/javascript">
+           
+        var imarrstu2 = ["009987-num4.png","009987-num4.png","009987-num4.png","009987-num4.png","009987-num4.png","009987-num4.png","009987-num4.png","009987-num4.png","009987-num4.png","009987-num4.png"]
+ 
+                    ImageGrid3(document.querySelectorAll('.wrapper4')[0],imarrstu2);
+                    </script>
+                    </div>
+ 
+                    </div>
+
+                    <div id="container">
+                        <div class="backgoundImage">
+                            <ul id="images"></ul>
+                            <ul id="images2"></ul>
+                        </div>
+                    </div>
+                    <div id="bar2"></div>
+                </div>
+                <div id="clear"></div>
+            </div>
+        </form>
+        <script type="text/javascript">
+            jQuery("document").ready(function(){
+
+                var bardata = [            
+                    {"name": "9","value": 1,},
+                    {"name": "8","value": 1,},
+                    {"name": "7","value": 1,},
+                    {"name": "6","value": 1,},
+                    {"name": "5","value": 1,},
+                    {"name": "4","value": 1,},
+                    {"name": "3","value": 1,},
+                    {"name": "2","value": 1,},
+                    {"name": "1","value": 1,},
+                    {"name": "0","value": 1,}
+                    ];
+                    plotbar(bardata)
+
+		        
+                var bardata2 = [            
+                    {"name": "9","value": 0.5975,},
+                    {"name": "8","value": 0.001209,},
+                    {"name": "7","value": 0.0003141,},
+                    {"name": "6","value": 0.000001408,},
+                    {"name": "5","value": 0.00004049,},
+                    {"name": "4","value": 0.4005,},
+                    {"name": "3","value": 0.0003525,},
+                    {"name": "2","value": 0.000008483,},
+                    {"name": "1","value": 0.000007445,},
+                    {"name": "0","value": 0.0000004614,}
+                    ];
+                    plotbar2(bardata2)
+                
+
+                jQuery("#generateVAEImages").on("click",function(ev){
+                    ev.preventDefault();
+                    var dataToSend = jQuery("#constructImageGrid2").serialize();
+                    jQuery.ajax({
+                        url: "/updateVaeInput",
+                        data: dataToSend,
+                        type: "GET",
+                        success: function(data){
+                            var flaskdata = JSON.parse(data);
+                            console.log(flaskdata.images)
+                            ImageGrid2(document.querySelectorAll('.wrapper2')[0],flaskdata.images);
+                        },
+                        error: function(error){
+                            console.log(error);
+                        }
+                    })
+
+                })
+            })
+        </script>
+    </body>
+</html>
